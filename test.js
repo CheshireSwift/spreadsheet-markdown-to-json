@@ -1,48 +1,14 @@
+const describe = require("./describe");
 const assert = require("assert");
 
-function runTests(tests) {
-  let pass = 0;
-  const failures = [];
-
-  tests.forEach(testRun => {
-    const deets = { name: "a test" };
-    try {
-      testRun(deets);
-      process.stdout.write(".");
-      pass++;
-    } catch (e) {
-      process.stdout.write("x");
-      failures.push({ deets, e });
-    }
-  });
-  console.log(`\n\n${pass} passing tests, ${failures.length} failures.`);
-
-  failures.forEach(failure => {
-    console.error(
-      `
-Failure in ${failure.deets.name}:
-    ${failure.e}` +
-        (failure.e.expected
-          ? `
-
-Expected
-${failure.e.expected}
-
-Received
-${failure.e.actual}`
-          : "")
-    );
-  });
-}
-
 const convert = require(".");
-runTests([
-  test => {
-    test.name = "Converts JSON to markdown";
+describe("The markdown/JSON converter", [
+  it => {
+    it("converts JSON to markdown");
     const markdown = convert.toMarkdown([
-      ["a", "b", "c"],
-      ["d", "e", "f"],
-      ["g", "h", "i"]
+      [{ value: "a" }, { value: "b" }, { value: "c" }],
+      [{ value: "d" }, { value: "e" }, { value: "f" }],
+      [{ value: "g" }, { value: "h" }, { value: "i" }]
     ]);
     assert.strictEqual(
       markdown,
@@ -55,8 +21,8 @@ runTests([
     );
   },
 
-  test => {
-    test.name = "Converts markdown to JSON";
+  it => {
+    it("converts markdown to JSON");
     const json = convert.toJSON(
       `
 |a|b|c|
@@ -67,7 +33,13 @@ runTests([
     );
     assert.strictEqual(
       json,
-      JSON.stringify([["a", "b", "c"], ["d", "e", "f"], ["g", "h", "i"]])
+      JSON.stringify([
+        [{ value: "a" }, { value: "b" }, { value: "c" }],
+        [{ value: "d" }, { value: "e" }, { value: "f" }],
+        [{ value: "g" }, { value: "h" }, { value: "i" }]
+      ])
     );
-  }
+  },
+
+  it => {}
 ]);
