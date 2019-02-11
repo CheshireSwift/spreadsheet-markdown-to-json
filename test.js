@@ -1,10 +1,10 @@
 const describe = require("./describe");
 const assert = require("assert");
 
-const convert = require(".");
-describe("The markdown/JSON converter", [
-  it => {
-    it("converts JSON to markdown");
+describe("The markdown/JSON converter", it => {
+  const convert = require(".");
+
+  it("converts JSON to markdown", () => {
     const markdown = convert.toMarkdown([
       [{ value: "a" }, { value: "b" }, { value: "c" }],
       [{ value: "d" }, { value: "e" }, { value: "f" }],
@@ -19,10 +19,9 @@ describe("The markdown/JSON converter", [
 |g|h|i|
     `.trim()
     );
-  },
+  });
 
-  it => {
-    it("converts markdown to JSON");
+  it("converts markdown to JSON", () => {
     const json = convert.toJSON(
       `
 |a|b|c|
@@ -39,7 +38,5 @@ describe("The markdown/JSON converter", [
         [{ value: "g" }, { value: "h" }, { value: "i" }]
       ])
     );
-  },
-
-  it => {}
-]);
+  });
+});

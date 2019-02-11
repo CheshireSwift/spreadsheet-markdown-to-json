@@ -2,20 +2,19 @@ function describe(feature, tests) {
   const passes = [];
   const failures = [];
 
-  tests.forEach(testRun => {
-    let description = "runs without error";
-    const it = desc => {
-      description = desc;
-    };
+  const it = (description, testRun) => {
     try {
-      testRun(it);
+      testRun();
       process.stdout.write(".");
       passes.push(description);
     } catch (e) {
       process.stdout.write("x");
       failures.push({ description, e });
     }
-  });
+  };
+
+  tests(it);
+
   console.log(
     `\n\n${passes.length} passing tests, ${failures.length} failures.`
   );
